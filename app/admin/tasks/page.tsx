@@ -119,9 +119,12 @@ export default function AdminTasksPage() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Authentication token not found.");
 
-        const res = await fetch("http://localhost:5000/api/departments", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/departments",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (!res.ok) {
           const errorData = await res.json();
           throw new Error(errorData.message || "Failed to fetch departments");

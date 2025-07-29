@@ -58,7 +58,7 @@ export default function TaskDetailComponent({
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/tasks/${task.id}/status`,
+        `https://task-management-backend-iyjp.onrender.com/api/tasks/${task.id}/status`,
         {
           method: "PATCH",
           headers: {

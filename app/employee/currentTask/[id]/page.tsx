@@ -46,7 +46,7 @@ export default function CurrentTaskDetailPage() {
       setError(null);
       try {
         const taskRes = await fetch(
-          `http://localhost:5000/api/tasks/${taskId}`,
+          `https://task-management-backend-iyjp.onrender.com/api/tasks/${taskId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

@@ -49,9 +49,12 @@ export default function UsersTab() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/departments", {
-          headers: getAuthHeaders(),
-        });
+        const res = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/departments",
+          {
+            headers: getAuthHeaders(),
+          }
+        );
         if (!res.ok) {
           throw new Error(`Failed to fetch departments: ${res.statusText}`);
         }

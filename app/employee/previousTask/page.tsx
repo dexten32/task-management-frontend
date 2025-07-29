@@ -32,11 +32,14 @@ export default function PreviousTasksSection() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token");
 
-        const res = await fetch("http://localhost:5000/api/tasks/previous", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/tasks/previous",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!res.ok) {
           throw new Error("Failed to fetch tasks");

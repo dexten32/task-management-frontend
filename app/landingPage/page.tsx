@@ -39,12 +39,15 @@ export default function ServiceCompanyLanding({
 
     if (isLogin) {
       try {
-        const response = await fetch("http://localhost:5000/api/users/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // Include cookies for session management
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/users/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // Include cookies for session management
+            body: JSON.stringify({ email, password }),
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();

@@ -42,7 +42,7 @@ export default function PreviousTaskDetailPage() {
       setError(null);
       try {
         const taskRes = await fetch(
-          `http://localhost:5000/api/tasks/${taskId}`, // Still fetches from the same API endpoint
+          `https://task-management-backend-iyjp.onrender.com/api/tasks/${taskId}`, // Still fetches from the same API endpoint
           {
             headers: { Authorization: `Bearer ${token}` },
           }

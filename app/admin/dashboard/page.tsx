@@ -391,7 +391,7 @@ const DashboardPage = () => {
         throw new Error("Authentication token not found.");
       }
       const response = await fetch(
-        `http://localhost:5000/api/users/update/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/update/${userId}`,
         {
           method: "PATCH",
           headers: {

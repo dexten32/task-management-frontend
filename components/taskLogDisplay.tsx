@@ -45,17 +45,20 @@ export default function TaskLogDisplay({
 
     setAddingLog(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/logs`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          taskId: task.id,
-          description: logDescription,
-        }),
-      });
+      const res = await fetch(
+        `https://task-management-backend-iyjp.onrender.com/api/logs`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            taskId: task.id,
+            description: logDescription,
+          }),
+        }
+      );
 
       if (res.ok) {
         const newLog: Log = await res.json();

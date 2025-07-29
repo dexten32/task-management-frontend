@@ -42,12 +42,15 @@ export default async function AdminTaskDetailPage({
   let error: string | null = null;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      cache: "no-store", // Ensure we always get the latest data
-    });
+    const res = await fetch(
+      `https://task-management-backend-iyjp.onrender.com/api/tasks/${taskId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-store", // Ensure we always get the latest data
+      }
+    );
 
     if (res.ok) {
       initialTask = await res.json();
