@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import TaskDetailComponent from "../../../../components/taskDetailComponent"; // Reusing your existing component
+import TaskDetailComponent from "../../../../components/taskDetailComponent";
 
 interface Task {
   id: string;
@@ -19,13 +19,13 @@ interface Task {
 }
 
 interface TaskDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function AdminTaskDetailPage({
   params,
 }: TaskDetailPageProps) {
-  const taskId = params.id;
+  const taskId = (await params).id;
   const cookieStore = cookies();
   const token = (await cookieStore).get("token")?.value ?? null;
 
