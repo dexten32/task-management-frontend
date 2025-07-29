@@ -14,13 +14,9 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Mail, User, Shield } from "lucide-react";
 
-interface ServiceCompanyLandingProps {
+export default function ServiceCompanyLanding(props: {
   onLogin: (role: "admin" | "employee") => void;
-}
-
-export default function ServiceCompanyLanding({
-  onLogin,
-}: ServiceCompanyLandingProps) {
+}) {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -272,4 +268,7 @@ export default function ServiceCompanyLanding({
       </footer>
     </div>
   );
+}
+function onLogin(arg0: string) {
+  throw new Error("Function not implemented.");
 }
