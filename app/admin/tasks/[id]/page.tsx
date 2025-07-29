@@ -26,8 +26,8 @@ export default async function AdminTaskDetailPage({
   params,
 }: TaskDetailPageProps) {
   const taskId = params.id;
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value || null;
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("token")?.value ?? null;
 
   if (!token) {
     return (

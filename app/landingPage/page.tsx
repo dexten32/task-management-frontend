@@ -84,11 +84,14 @@ export default function ServiceCompanyLanding({
       }
       // You can replace this with backend signup call later
       try {
-        const response = await fetch(`${baseUrl}/api/users/signup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password }),
-        });
+        const response = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/users/signup",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password }),
+          }
+        );
 
         if (!response.ok) {
           const data = await response.json();
