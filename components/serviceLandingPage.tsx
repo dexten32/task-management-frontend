@@ -19,6 +19,7 @@ export default function ServiceCompanyLanding() {
   const [error, setError] = useState("");
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const token = localStorage.getItem("token");
 
   // Removed invalid top-level await fetch call. All async logic is handled in handleSubmit.
 
@@ -32,8 +33,11 @@ export default function ServiceCompanyLanding() {
           "https://task-management-backend-iyjp.onrender.com/api/users/login",
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include", // Include cookies for session management
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+
             body: JSON.stringify({ email, password }),
           }
         );
