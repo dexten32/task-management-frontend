@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { Menu, User, CircleCheck, ListCheck, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SidebarLink as SidebarLinkComponent } from "@/app/admin/layout";
+import { SidebarLink as SidebarLinkComponent } from "@/components/sidebarLink";
 
 export default function EmployeeLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
