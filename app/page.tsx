@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-800 text-white">
       {/* Pass the login handler to the landing page */}
-      <ServiceCompanyLanding onLogin={handleLogin} />
+      <ServiceCompanyLanding />
     </div>
   );
 }
