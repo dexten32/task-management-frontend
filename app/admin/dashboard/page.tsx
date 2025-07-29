@@ -77,6 +77,7 @@ const DashboardPage = () => {
           "https://task-management-backend-iyjp.onrender.com/api/users",
           {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
@@ -120,9 +121,10 @@ const DashboardPage = () => {
 
         // Fetch departments
         const deptResponse = await fetch(
-          "http://localhost:5000/api/departments",
+          "https://task-management-backend-iyjp.onrender.com/api/departments",
           {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
@@ -157,9 +159,10 @@ const DashboardPage = () => {
           throw new Error("Authentication token not found.");
         }
         const response = await fetch(
-          "http://localhost:5000/api/users/pending",
+          "https://task-management-backend-iyjp.onrender.com/api/users/pending",
           {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
@@ -193,11 +196,15 @@ const DashboardPage = () => {
       if (!token) {
         throw new Error("Authentication token not found.");
       }
-      const res = await fetch(`http://localhost:5000/api/tasks/recentlimit`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `https://task-management-backend-iyjp.onrender.com/api/tasks/recentlimit`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to fetch recent tasks");
@@ -226,11 +233,15 @@ const DashboardPage = () => {
         if (!token) {
           throw new Error("Authentication token not found.");
         }
-        const res = await fetch("http://localhost:5000/api/tasks/delayed", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/tasks/delayed",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!res.ok) {
           const errorData = await res.json();
           throw new Error(errorData.message || "Failed to fetch delayed tasks");
@@ -282,20 +293,23 @@ const DashboardPage = () => {
       if (!token) {
         throw new Error("Authentication token not found.");
       }
-      const response = await fetch("http://localhost:5000/api/tasks/assign", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          deadline,
-          assignedTo: selectedUser,
-          departmentId: selectedDeptId || null,
-        }),
-      });
+      const response = await fetch(
+        "https://task-management-backend-iyjp.onrender.com/api/tasks/assign",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            deadline,
+            assignedTo: selectedUser,
+            departmentId: selectedDeptId || null,
+          }),
+        }
+      );
 
       if (response.ok) {
         setSuccess("Task created successfully!");
@@ -327,10 +341,11 @@ const DashboardPage = () => {
         throw new Error("Authentication token not found.");
       }
       const response = await fetch(
-        `http://localhost:5000/api/users/approve/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/approve/${userId}`,
         {
           method: "PATCH",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -361,10 +376,11 @@ const DashboardPage = () => {
         throw new Error("Authentication token not found.");
       }
       const response = await fetch(
-        `http://localhost:5000/api/users/decline/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/decline/${userId}`,
         {
           method: "DELETE",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
