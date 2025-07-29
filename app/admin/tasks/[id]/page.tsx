@@ -10,23 +10,23 @@ interface Task {
   status: string;
   logs: { id: string; description: string; createdAt: string }[];
 
-  assignedBy?: { id: string; username: string; email: string }; // Optional, if included by backend
+  assignedBy?: { id: string; username: string; email: string };
   assignedTo?: {
     id: string;
     username: string;
     email: string;
     department?: { id: string; name: string };
-  }; // Optional, if included by backend
+  };
 }
 
 interface TaskDetailPageProps {
-  params: { id: string }; // Nex  t.js automatically provides params from the URL
+  params: { id: string };
 }
 
 export default async function AdminTaskDetailPage({
   params,
 }: TaskDetailPageProps) {
-  const taskId = params.id;
+  const taskId = { taskId: params.id };
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value || null;
 
