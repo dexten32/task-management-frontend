@@ -20,7 +20,7 @@ interface Task {
 }
 
 interface TaskDetailPageProps {
-  params: { id: string }; // Next.js automatically provides params from the URL
+  params: { id: string }; // Nex  t.js automatically provides params from the URL
 }
 
 export default async function AdminTaskDetailPage({
