@@ -26,9 +26,9 @@ interface TaskDetailPageProps {
 export default async function AdminTaskDetailPage({
   params,
 }: TaskDetailPageProps) {
-  const taskId = { taskId: params.id };
+  const taskId = params.id;
   const cookieStore = cookies();
-  const token = cookieStore.get("token")?.value || null;
+  const token = (await cookieStore).get("token")?.value || null;
 
   if (!token) {
     return (
