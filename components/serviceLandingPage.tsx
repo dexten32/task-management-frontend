@@ -19,9 +19,6 @@ export default function ServiceCompanyLanding() {
   const [error, setError] = useState("");
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const token = localStorage.getItem("token");
-
-  // Removed invalid top-level await fetch call. All async logic is handled in handleSubmit.
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,9 +32,8 @@ export default function ServiceCompanyLanding() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
             },
-
+            credentials: "include",
             body: JSON.stringify({ email, password }),
           }
         );
