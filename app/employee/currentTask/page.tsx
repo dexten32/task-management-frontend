@@ -147,7 +147,7 @@ export default function CurrentTasksSection() {
       if (!token) throw new Error("Authentication token not found.");
 
       const res = await fetch(
-        `http://localhost:5000/api/tasks/${taskId}/status`,
+        `https://task-management-backend-iyjp.onrender.com/api/tasks/${taskId}/status`,
         {
           method: "PATCH",
           headers: {

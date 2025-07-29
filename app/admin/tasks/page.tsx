@@ -157,8 +157,8 @@ export default function AdminTasksPage() {
 
         const url =
           selectedDepartment === "All"
-            ? "http://localhost:5000/api/users"
-            : `http://localhost:5000/api/users?department=${encodeURIComponent(
+            ? "https://task-management-backend-iyjp.onrender.com/api/users"
+            : `https://task-management-backend-iyjp.onrender.com/api/users?department=${encodeURIComponent(
                 selectedDepartment
               )}`;
 
@@ -213,7 +213,7 @@ export default function AdminTasksPage() {
 
         // Fetch tasks assigned by this admin
         const res = await fetch(
-          `http://localhost:5000/api/tasks/recent`, // This endpoint uses req.user.id
+          `https://task-management-backend-iyjp.onrender.com/api/tasks/recent`, // This endpoint uses req.user.id
           {
             headers: {
               Authorization: `Bearer ${token}`,

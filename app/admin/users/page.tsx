@@ -70,9 +70,12 @@ export default function UsersTab() {
 
     const fetchRoles = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/users`, {
-          headers: getAuthHeaders(),
-        });
+        const res = await fetch(
+          `https://task-management-backend-iyjp.onrender.com/api/users`,
+          {
+            headers: getAuthHeaders(),
+          }
+        );
         if (!res.ok) {
           throw new Error(`Failed to fetch roles: ${res.statusText}`);
         }
@@ -94,9 +97,12 @@ export default function UsersTab() {
 
     const fetchPendingUsers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users/pending", {
-          headers: getAuthHeaders(),
-        });
+        const res = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/users/pending",
+          {
+            headers: getAuthHeaders(),
+          }
+        );
         if (!res.ok) {
           throw new Error(`Failed to fetch pending users: ${res.statusText}`);
         }
@@ -111,9 +117,12 @@ export default function UsersTab() {
 
     const fetchEmployees = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/users`, {
-          headers: getAuthHeaders(),
-        });
+        const res = await fetch(
+          `https://task-management-backend-iyjp.onrender.com/api/users`,
+          {
+            headers: getAuthHeaders(),
+          }
+        );
         if (!res.ok) {
           throw new Error(`Failed to fetch employees: ${res.statusText}`);
         }
@@ -136,7 +145,7 @@ export default function UsersTab() {
   const handleAccept = async (userId: string) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/users/approve/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/approve/${userId}`,
         {
           method: "PATCH",
           headers: getAuthHeaders(),
@@ -147,9 +156,12 @@ export default function UsersTab() {
       }
       setPending((prev) => prev.filter((user) => user.id !== userId));
 
-      const employeesRes = await fetch(`http://localhost:5000/api/users`, {
-        headers: getAuthHeaders(),
-      });
+      const employeesRes = await fetch(
+        `https://task-management-backend-iyjp.onrender.com/api/users`,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
       if (employeesRes.ok) {
         const employeesData = await employeesRes.json();
         const approved = employeesData.users.filter(
@@ -168,7 +180,7 @@ export default function UsersTab() {
   const handleDecline = async (userId: string) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/users/decline/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/decline/${userId}`,
         {
           method: "DELETE",
           headers: getAuthHeaders(),
@@ -194,7 +206,7 @@ export default function UsersTab() {
       });
 
       const res = await fetch(
-        `http://localhost:5000/api/users/update/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/update/${userId}`,
         {
           method: "PATCH",
           headers: getAuthHeaders(),
@@ -232,7 +244,7 @@ export default function UsersTab() {
   const handleDelete = async (userId: string) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/users/delete/${userId}`,
+        `https://task-management-backend-iyjp.onrender.com/api/users/delete/${userId}`,
         {
           method: "DELETE",
           headers: getAuthHeaders(),

@@ -73,11 +73,14 @@ const DashboardPage = () => {
         }
 
         // Fetch users
-        const userResponse = await fetch("http://localhost:5000/api/users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const userResponse = await fetch(
+          "https://task-management-backend-iyjp.onrender.com/api/users",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!userResponse.ok) {
           const errorData = await userResponse.json();
           throw new Error(errorData.message || "Failed to fetch users");
