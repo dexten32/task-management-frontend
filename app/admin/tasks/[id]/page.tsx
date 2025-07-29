@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import TaskDetailComponent from "../../../../components/taskDetailComponent"; // Reusing your existing component
 
-// Define the Task interface,
 interface Task {
   id: string;
   title: string;
@@ -27,8 +26,8 @@ export default async function AdminTaskDetailPage({
   params,
 }: TaskDetailPageProps) {
   const taskId = params.id;
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("token")?.value || null;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value || null;
 
   if (!token) {
     return (
@@ -48,13 +47,13 @@ export default async function AdminTaskDetailPage({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        cache: "no-store", // Ensure we always get the latest data
+        cache: "no-store",
       }
     );
 
     if (res.ok) {
       initialTask = await res.json();
-      // Ensure the status is uppercase for correct frontend display logic (as per your fix)
+
       if (initialTask && initialTask.status) {
         initialTask.status = initialTask.status.toUpperCase();
       }
