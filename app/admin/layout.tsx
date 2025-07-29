@@ -1,10 +1,8 @@
 "use client";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Menu, User, Home, Users, Clipboard, LogOut } from "lucide-react";
-import Link from "next/link";
-import { SidebarLink as SidebarLinkComponent } from "@/app/admin/layout";
-import { usePathname } from "next/navigation";
-import clsx from "clsx";
+
+import { SidebarLink } from "@/components/sidebarLinkComponent";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -70,19 +68,19 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </button>
         </div>
         <nav className="mt-8">
-          <SidebarLinkComponent
+          <SidebarLink
             href="/admin/dashboard"
             icon={<Home />}
             label="Dashboard"
             sidebarOpen={sidebarOpen}
           />
-          <SidebarLinkComponent
+          <SidebarLink
             href="/admin/users"
             icon={<Users />}
             label="Users"
             sidebarOpen={sidebarOpen}
           />
-          <SidebarLinkComponent
+          <SidebarLink
             href="/admin/tasks"
             icon={<Clipboard />}
             label="Tasks"
@@ -131,36 +129,5 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
-  );
-}
-
-export function SidebarLink({
-  href,
-  icon,
-  label,
-  sidebarOpen,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  sidebarOpen: boolean;
-}) {
-  const pathname = usePathname();
-  const isActive = pathname === href;
-
-  return (
-    <Link href={href}>
-      <div
-        className={clsx(
-          "flex items-center p-4 cursor-pointer",
-          isActive
-            ? "bg-slate-100 text-gray-800"
-            : "hover:bg-slate-100 text-slate-100 hover:text-gray-800"
-        )}
-      >
-        <div className="h-5 w-5">{icon}</div>
-        {sidebarOpen && <span className="ml-3">{label}</span>}
-      </div>
-    </Link>
   );
 }

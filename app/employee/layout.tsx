@@ -1,8 +1,7 @@
 "use client";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Menu, User, CircleCheck, ListCheck, LogOut } from "lucide-react";
-import Link from "next/link";
-import { SidebarLink as SidebarLinkComponent } from "@/app/admin/layout";
+import { SidebarLink } from "../../components/sidebarLinkComponent";
 import { usePathname } from "next/navigation";
 
 export default function EmployeeLayout({ children }: { children: ReactNode }) {
@@ -70,13 +69,13 @@ export default function EmployeeLayout({ children }: { children: ReactNode }) {
           </button>
         </div>
         <nav className="mt-8">
-          <SidebarLinkComponent
+          <SidebarLink
             href="/employee/currentTask"
             icon={<CircleCheck />}
             label="Current Tasks"
             sidebarOpen={sidebarOpen}
           />
-          <SidebarLinkComponent
+          <SidebarLink
             href="/employee/previousTask"
             icon={<ListCheck />}
             label="Previous Tasks"
@@ -125,39 +124,5 @@ export default function EmployeeLayout({ children }: { children: ReactNode }) {
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
-  );
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function SidebarLink({
-  href,
-  icon,
-  label,
-  sidebarOpen,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  sidebarOpen: boolean;
-}) {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    setIsActive(window.location.pathname === href);
-  }, [href]);
-
-  return (
-    <Link href={href}>
-      <div
-        className={`flex items-center p-4 cursor-pointer ${
-          isActive
-            ? "bg-slate-100 text-gray-800"
-            : "hover:bg-slate-100 text-slate-100 hover:text-gray-800"
-        }`}
-      >
-        <div className="h-5 w-5">{icon}</div>
-        {sidebarOpen && <span className="ml-3">{label}</span>}
-      </div>
-    </Link>
   );
 }
