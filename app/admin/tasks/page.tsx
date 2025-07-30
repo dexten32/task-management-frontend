@@ -4,14 +4,14 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface Task {
-  id: string; // Changed from taskId: number to id: string to match Prisma UUIDs
+  id: string;
   title: string;
   description: string;
   deadline: string;
-  assignedTo: { id: string; name: string }; // Expecting an object from backend
-  department: string; // This will still be a challenge as backend doesn't return it directly on task
+  assignedTo: { id: string; name: string };
+  department: string;
   status: string;
-  assignedBy: { id: string; name: string }; // Expecting an object from backend
+  assignedBy: { id: string; name: string };
 }
 
 interface FetchedTask {
@@ -27,7 +27,7 @@ interface FetchedTask {
 interface User {
   id: string;
   name: string;
-  departmentId: string | null; // User's department ID
+  departmentId: string | null;
   departmentName?: string;
 }
 
@@ -36,9 +36,8 @@ interface Department {
   name: string;
 }
 
-// Helper to decode JWT token (re-used from previous debugging)
 interface DecodedToken {
-  id: string; // Matches the 'id' in your JWT payload
+  id: string;
   email: string;
   role: string;
   iat: number;
@@ -64,7 +63,6 @@ const decodeJwtToken = (token: string): DecodedToken | null => {
   }
 };
 
-// Custom hook to get logged in admin's info
 function useLoggedInAdmin() {
   const [adminInfo, setAdminInfo] = useState<{
     id: string;
@@ -76,7 +74,6 @@ function useLoggedInAdmin() {
     if (token) {
       const decoded = decodeJwtToken(token);
       if (decoded && decoded.id) {
-        // Assuming 'name' isn't in token, using email or a placeholder
         setAdminInfo({
           id: decoded.id,
           name: decoded.email || "Logged-in Admin",
@@ -89,14 +86,14 @@ function useLoggedInAdmin() {
       console.warn("No authentication token found in localStorage.");
       setAdminInfo(null);
     }
-  }, []); // Run once on mount
+  }, []);
 
   return adminInfo;
 }
 
 export default function AdminTasksPage() {
   const loggedInAdmin = useLoggedInAdmin();
-  const loggedInAdminId = loggedInAdmin?.id; // This will now be the actual UUID
+  const loggedInAdminId = loggedInAdmin?.id;
 
   const [departments, setDepartments] = useState<Department[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -110,7 +107,6 @@ export default function AdminTasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch departments on mount
   useEffect(() => {
     async function fetchDepartments() {
       setLoadingDepartments(true);
@@ -146,7 +142,6 @@ export default function AdminTasksPage() {
     fetchDepartments();
   }, []);
 
-  // Fetch users by department whenever department changes
   useEffect(() => {
     async function fetchUsers() {
       setLoadingUsers(true);
@@ -170,17 +165,16 @@ export default function AdminTasksPage() {
           throw new Error(errorData.message || "Failed to fetch users");
         }
         const data = await res.json();
-        // Map users to ensure departmentId is correctly picked up
         const mappedUsers: User[] = data.users.map(
           (user: User & { department?: { name?: string } }) => ({
             id: user.id,
             name: user.name,
             departmentId: user.departmentId || null,
-            departmentName: user.department?.name || null, // Assuming department object is populated
+            departmentName: user.department?.name || null,
           })
         );
         setUsers(mappedUsers);
-        setSelectedUser("All"); // reset user filter on department change
+        setSelectedUser("All");
       } catch (error: unknown) {
         console.error("Error fetching users:", error);
         setError(
@@ -196,24 +190,16 @@ export default function AdminTasksPage() {
     fetchUsers();
   }, [selectedDepartment]);
 
-  // Fetch tasks assigned by this admin
   useEffect(() => {
     async function fetchTasks() {
-      if (!loggedInAdminId) {
-        setTasks([]); // Clear tasks if no admin ID is available
-        setLoadingTasks(false);
-        return;
-      }
-
       setLoadingTasks(true);
       setError(null);
       try {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Authentication token not found.");
 
-        // Fetch tasks assigned by this admin
         const res = await fetch(
-          `https://task-management-backend-iyjp.onrender.com/api/tasks/recent`, // This endpoint uses req.user.id
+          `https://task-management-backend-iyjp.onrender.com/api/tasks/recent`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -225,13 +211,8 @@ export default function AdminTasksPage() {
           throw new Error(errorData.message || "Failed to fetch tasks");
         }
         const data = await res.json();
-        // Backend's getRecentTasks returns { tasks: [...] }
-        const fetchedTasks = data.tasks || [];
-        console.log("Fetched tasks:", fetchedTasks); // Debugging line
 
-        // Map backend task data to frontend Task interface
-
-        const mappedTasks: Task[] = fetchedTasks.map((task: FetchedTask) => {
+        const mappedTasks: Task[] = data.tasks.map((task: FetchedTask) => {
           return {
             id: task.id,
             title: task.title,
@@ -256,13 +237,12 @@ export default function AdminTasksPage() {
         setLoadingTasks(false);
       }
     }
-    // Only fetch tasks if loggedInAdminId is available
+
     if (loggedInAdminId) {
       fetchTasks();
     }
-  }, [loggedInAdminId]); // Re-run when loggedInAdminId changes
+  }, [loggedInAdminId]);
 
-  // Filter tasks based on selected department and user (frontend filtering)
   const filteredTasks = (tasks || []).filter((task) => {
     const departmentMatch =
       selectedDepartment === "All" || task.department === selectedDepartment;
@@ -278,16 +258,13 @@ export default function AdminTasksPage() {
       <h1 className="text-3xl font-bold text-white mb-8">
         Tasks Assigned by You
       </h1>
-
       {error && (
         <div className="bg-red-800 text-white p-4 rounded-lg mb-6">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Filters */}
       <div className="mb-8 flex flex-wrap gap-4">
-        {/* Department Filter */}
         <div className="flex flex-col">
           <label
             htmlFor="department"
@@ -314,7 +291,6 @@ export default function AdminTasksPage() {
           )}
         </div>
 
-        {/* User Filter */}
         <div className="flex flex-col">
           <label htmlFor="user" className="block text-sm text-gray-400 mb-2">
             Filter by User
@@ -338,8 +314,6 @@ export default function AdminTasksPage() {
           )}
         </div>
       </div>
-
-      {/* Tasks List */}
       <div className="space-y-6">
         {loadingTasks ? (
           <p className="text-gray-400 text-lg">Loading tasks...</p>
@@ -358,14 +332,12 @@ export default function AdminTasksPage() {
                       Deadline:
                     </span>{" "}
                     {new Date(task.deadline).toLocaleString()}{" "}
-                    {/* Format date */}
                   </p>
                   <p>
                     <span className="font-semibold text-gray-300">
                       Assigned To:
                     </span>{" "}
                     {task.assignedTo?.name || "N/A"}{" "}
-                    {/* Access name property */}
                   </p>
                   <p>
                     <span className="font-semibold text-gray-300">

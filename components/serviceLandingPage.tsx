@@ -30,10 +30,8 @@ export default function ServiceCompanyLanding() {
           "https://task-management-backend-iyjp.onrender.com/api/users/login",
           {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // Important: receive the HttpOnly cookie
             body: JSON.stringify({ email, password }),
           }
         );
@@ -43,27 +41,30 @@ export default function ServiceCompanyLanding() {
           setError(errorData.message || "Login failed");
           return;
         }
+
         const data = await response.json();
-        console.log(data);
+        console.log("Login response:", data);
+
+        // Optional: if you want to use token manually later
+        console.log(data.token)
+        localStorage.setItem("token", data.token);
 
         const role = data.user?.role?.toUpperCase();
 
-        // Save JWT token for future authenticated requests
-        localStorage.setItem("token", data.token);
-
-        if (data.user.role === "ADMIN") {
+        // Route based on role
+        if (role === "ADMIN") {
           router.push("/admin/dashboard");
-          router.refresh(); // Refresh to ensure admin dashboard loads correctly
-          //   onLogin("admin");
-        } else if (data.user.role === "EMPLOYEE") {
+          router.refresh();
+        } else if (role === "EMPLOYEE") {
           router.push("/employee/currentTask");
-          router.refresh(); // Refresh to ensure employee dashboard loads correctly
-          //   onLogin("employee");
+          router.refresh();
         } else {
           console.error("Unknown user role received:", role);
           setError("Unknown user role");
         }
+
       } catch (err) {
+        console.error("Login error:", err);
         setError("Network error. Please try again.");
       }
     } else {
@@ -71,7 +72,7 @@ export default function ServiceCompanyLanding() {
         setError("Passwords don't match!");
         return;
       }
-      // You can replace this with backend signup call later
+
       try {
         const response = await fetch(
           "https://task-management-backend-iyjp.onrender.com/api/users/signup",
@@ -91,11 +92,12 @@ export default function ServiceCompanyLanding() {
         alert("Account created successfully. Please wait for admin approval.");
         setIsLogin(true);
       } catch (err) {
+        console.error("Signup error:", err);
         setError("Network error. Please try again.");
       }
-      setIsLogin(true);
     }
   };
+
   // Utility function to add Authorization header for future requests
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");

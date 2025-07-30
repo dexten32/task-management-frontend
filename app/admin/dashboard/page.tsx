@@ -56,23 +56,19 @@ const DashboardPage = () => {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [pendingUsers, setPendingUsers] = useState<PendingUser[]>([]);
   const [backendDelayedTasks, setBackendDelayedTasks] = useState<Task[]>([]);
-
-  // New states for loading and error specific to the modal's data
   const [isModalDataLoading, setIsModalDataLoading] = useState(true);
   const [modalFetchError, setModalFetchError] = useState<string | null>(null);
 
-  // Fetch users and departments
   useEffect(() => {
     const fetchUsersAndDepartments = async () => {
-      setIsModalDataLoading(true); // Start loading
-      setModalFetchError(null); // Clear previous errors
+      setIsModalDataLoading(true);
+      setModalFetchError(null);
       try {
         const token = localStorage.getItem("token");
         if (!token) {
           throw new Error("Authentication token not found.");
         }
 
-        // Fetch users
         const userResponse = await fetch(
           "https://task-management-backend-iyjp.onrender.com/api/users",
           {
@@ -96,7 +92,7 @@ const DashboardPage = () => {
             name: string;
             email: string;
             departmentId: string | null;
-            approved: boolean; // Add if used
+            approved: boolean;
             role: string;
           }) => {
             console.log(
@@ -109,7 +105,7 @@ const DashboardPage = () => {
               email: user.email,
               departmentId: user.departmentId,
               role: user.role,
-              approved: user.approved, // Ensure departmentId is correctly extracted
+              approved: user.approved,
             };
           }
         );
@@ -119,7 +115,6 @@ const DashboardPage = () => {
         );
         setAllUsers(mappedUsers);
 
-        // Fetch departments
         const deptResponse = await fetch(
           "https://task-management-backend-iyjp.onrender.com/api/departments",
           {
@@ -140,17 +135,16 @@ const DashboardPage = () => {
         setModalFetchError(
           typeof error === "object" && error !== null && "message" in error
             ? (error as { message?: string }).message ||
-                "Failed to load data. Please check your connection."
+            "Failed to load data. Please check your connection."
             : "Failed to load data. Please check your connection."
         );
       } finally {
-        setIsModalDataLoading(false); // End loading
+        setIsModalDataLoading(false);
       }
     };
     fetchUsersAndDepartments();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
-  // Fetch pending user requests
   useEffect(() => {
     const fetchPendingUsers = async () => {
       try {
@@ -180,7 +174,7 @@ const DashboardPage = () => {
         setError(
           typeof error === "object" && error !== null && "message" in error
             ? (error as { message?: string }).message ||
-                "Failed to load pending user requests."
+            "Failed to load pending user requests."
             : "Failed to load pending user requests."
         );
       }
@@ -189,7 +183,6 @@ const DashboardPage = () => {
     fetchPendingUsers();
   }, []);
 
-  // Fetch recent tasks
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -225,7 +218,6 @@ const DashboardPage = () => {
     fetchTasks();
   }, []);
 
-  // Fetch delayed tasks
   useEffect(() => {
     const fetchBackendDelayedTasks = async () => {
       try {
@@ -253,7 +245,7 @@ const DashboardPage = () => {
         setError(
           typeof err === "object" && err !== null && "message" in err
             ? (err as { message?: string }).message ||
-                "Failed to load delayed tasks."
+            "Failed to load delayed tasks."
             : "Failed to load delayed tasks."
         );
       }
@@ -262,12 +254,10 @@ const DashboardPage = () => {
     fetchBackendDelayedTasks();
   }, []);
 
-  // Reset selected user when department changes
   useEffect(() => {
     setSelectedUser("");
   }, [selectedDeptId]);
 
-  // Filter users based on the selected department
   const filteredUsers = allUsers.filter((user) => {
     return user.departmentId === selectedDeptId;
   });
@@ -319,7 +309,7 @@ const DashboardPage = () => {
         setSelectedUser("");
         setSelectedDeptId("");
         setTimeout(() => setIsModalOpen(false), 1500);
-        fetchTasks(); // Refresh recent tasks
+        fetchTasks();
       } else {
         const data = await response.json();
         setError(data.message || "Failed to create task");
@@ -353,8 +343,6 @@ const DashboardPage = () => {
       console.log("APPROVE USER: Response status:", response.status);
       if (response.ok) {
         setPendingUsers(pendingUsers.filter((user) => user.id !== userId));
-        // Optionally refetch all users if approval changes their status or department
-        // await fetchUsersAndDepartments();
       } else {
         const data = await response.json();
         setError(data.message || "Failed to approve user");
@@ -422,13 +410,12 @@ const DashboardPage = () => {
         }
       );
       if (response.ok) {
-        // Update pending users if the user is still pending
         setPendingUsers(
           pendingUsers.map((user) =>
             user.id === userId ? { ...user, departmentId: departmentId } : user
           )
         );
-        // Update allUsers to reflect the department change immediately
+
         setAllUsers(
           allUsers.map((user) =>
             user.id === userId ? { ...user, departmentId: departmentId } : user
@@ -443,13 +430,12 @@ const DashboardPage = () => {
       setError(
         typeof error === "object" && error !== null && "message" in error
           ? (error as { message?: string }).message ||
-              "Failed to update department."
+          "Failed to update department."
           : "Failed to update department."
       );
     }
   };
 
-  // Helper function to get department name from ID (not directly used in modal dropdowns, but good for display)
   const getDepartmentName = (departmentId: string | null) => {
     if (!departmentId) return "N/A";
     const department = departments.find((d) => d.id === departmentId);
@@ -599,14 +585,14 @@ const DashboardPage = () => {
                         <SelectField
                           value={
                             typeof user.departmentId === "object" &&
-                            user.departmentId !== null
+                              user.departmentId !== null
                               ? user.departmentId
                               : user.departmentId || ""
                           }
                           onValueChange={(value) =>
                             handleDepartmentChange(user.id, value)
                           }
-                          disabled={departments.length === 0} // Disable if departments not loaded
+                          disabled={departments.length === 0}
                         >
                           <SelectTrigger className="w-[200px] bg-white">
                             <SelectValue
@@ -791,8 +777,8 @@ const DashboardPage = () => {
                           !selectedDeptId
                             ? "Select department first"
                             : filteredUsers.length > 0
-                            ? "Select a user"
-                            : "No users in this department"
+                              ? "Select a user"
+                              : "No users in this department"
                         }
                       />
                     </SelectTrigger>
